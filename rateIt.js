@@ -1,4 +1,30 @@
 if (Meteor.isClient) {
+  var FILTER_KEY = "searchFilter";
+
+  Template.ideas.rendered = function() {
+    
+    Session.setDefault(FILTER_KEY, "");
+
+    Tracker.autorun(function() {
+      var filter = {};
+      var filterValue = Session.get(FILTER_KEY);
+      if (filterValue !== "") {
+        filter.$or = [{
+          name: {
+            $regex: '^' + filterValue,
+            $options: 'i'
+          }
+        }, {
+          description: {
+            $regex: '^' + filterValue,
+            $options: 'i'
+          }
+        }];
+      }
+      Meteor.subscribe('ideasFilter', filter)
+    });
+
+  };
 
   Template.ideas.helpers({
     ideas: function() {
@@ -14,11 +40,26 @@ if (Meteor.isClient) {
   Template.ideas.events({
     'click .up': function(evt, tmpl) {
       var iId = this._id;
-      Ideas.update({_id: iId}, {$inc: {votes: 1}})
+      Ideas.update({
+        _id: iId
+      }, {
+        $inc: {
+          votes: 1
+        }
+      })
     },
     'click .down': function(evt, tmpl) {
       var iId = this._id;
-      Ideas.update({_id: iId}, {$inc: {votes: -1}})
+      Ideas.update({
+        _id: iId
+      }, {
+        $inc: {
+          votes: -1
+        }
+      })
+    },
+    'keyup .filter': function(evt, tmpl){
+      Session.set(FILTER_KEY, $(evt.currentTarget).val());
     }
 
   })

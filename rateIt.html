@@ -34,40 +34,52 @@
 </template>
 
 <template name="ideas">
-  <table class="ideas">
 
-    <tr>
-      <th>Vote Up</th>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Created Date</th>
-      <th>Vote Down</th>
-      <th>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addIdeaModal">New Idea?</button>
-      </th>
+  <div class="container-fluid">
+  
+    <div class="row">
+    
+      <div class="form-inline col-md-4 col-md-offset-8">
+      
+          <input name='searchFilter' class='filter' type="text" placeholder="type filter here">
+        </div>
+    
+    </div>
 
-    </tr> 
-    {{#each ideas}}
-       
+    <table class="ideas">
 
-     {{> idea}}
-
-    {{else}} 
       <tr>
-        <td>
-          <div class="panel panel-info">
-            <div class="panel-heading">Nothing to rate.</div>
-            <div class="panel-body">
-              Add an idea. 
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addIdeaModal">New Idea?</button>
-            </div>
-          </div>       
-        </td>
-      </tr>
-    {{/each}}
-  </table>
+        <th>Vote Up</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Created Date</th>
+        <th>Vote Down</th>
+        <th>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addIdeaModal">New Idea?</button>
+        </th>
 
- 
+      </tr> 
+      {{#each ideas}}
+         
+
+       {{> idea}}
+
+      {{else}} 
+        <tr>
+          <td>
+            <div class="panel panel-info">
+              <div class="panel-heading">Nothing to rate.</div>
+              <div class="panel-body">
+                Add an idea. 
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addIdeaModal">New Idea?</button>
+              </div>
+            </div>       
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+
+  </div>
 </template>
 
 <template name="idea">
