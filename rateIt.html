@@ -4,8 +4,10 @@
 
 <body>
   {{> nav}}
-  
+
   {{> ideas}}
+
+   {{> modal}}
 </body>
 
 <template name="nav">
@@ -25,7 +27,7 @@
       <div class='navbar-right pull-right login'> {{> loginButtons align="right" }}
       </div>
     </div>
-        
+     
     </div>
   </nav>
 </template>
@@ -33,36 +35,67 @@
 <template name="ideas">
   <table class="ideas">
 
-  {{#each ideas}}
-     <tr>
+    <tr>
       <th>Name</th>
       <th>Description</th>
       <th>Created Date</th>
       <th>
-        <button>
-          Add
-        </button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addIdeaModal">New Idea?</button>
       </th>
-
     </tr> 
-   {{> idea}}
-  {{else}} 
-    <tr>
-      <td>
-      <div class="panel panel-info">
-      <div class="panel-heading">Nothing to rate.</div>
-  <div class="panel-body">
-    <div></div>Add an idea. <button>Add</button>
-  </div>
-</div>
+    {{#each ideas}}
        
-      </td>
-    </tr>
-  {{/each}}
+
+     {{> idea}}
+
+    {{else}} 
+      <tr>
+        <td>
+          <div class="panel panel-info">
+            <div class="panel-heading">Nothing to rate.</div>
+            <div class="panel-body">
+              Add an idea. 
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addIdeaModal">New Idea?</button>
+            </div>
+          </div>       
+        </td>
+      </tr>
+    {{/each}}
   </table>
+
+ 
 </template>
 
 <template name="idea">
   <tr><td>{{name}}</td><td>{{description}}</td><td>{{createdAt}}</td></tr>
+</template>
+
+<template name="modal">
+  <div class="modal fade" id="addIdeaModal" tabindex="-1" role="dialog" aria-labelledby="add Idea" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="exampleModalLabel">New Idea</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form">
+            <div class="form-group">
+              <label for="recipient-name" class="control-label">Name:</label>
+              <input type="text" class="form-control name" placeholder="Name the idea">
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="control-label">Description:</label>
+              <textarea class="form-control description" placeholder="Describe the idea"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary addIdea">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
