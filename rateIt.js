@@ -44,7 +44,7 @@ if (Meteor.isClient) {
       if (uId) {
         Votes.insert({
           userId: uId,
-          idea: iId,
+          ideaId: iId,
           vote: 'up',
           createdAt: new Date()
         });
@@ -56,7 +56,7 @@ if (Meteor.isClient) {
       if (uId) {
         Votes.insert({
           userId: uId,
-          idea: iId,
+          ideaId: iId,
           vote: 'down',
           createdAt: new Date()
         });

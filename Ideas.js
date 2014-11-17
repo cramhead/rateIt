@@ -66,6 +66,27 @@ if (Meteor.isServer) {
     }).count() > availableVotes;
   };
 
+  Votes.after.insert(function(userId, doc) {
+    if (doc.vote === 'up') {
+      Ideas.update({
+        _id: doc.ideaId
+      }, {
+        $inc: {
+          votes: 1
+        }
+      });
+    }
+    if (doc.vote === 'down') {
+      Ideas.update({
+        _id: doc.ideaId
+      }, {
+        $inc: {
+          votes: -1
+        }
+      });
+    }
+  });
+
 
   Meteor.publish('ideasFilter', function(filter, options) {
     filter = filter || {};
