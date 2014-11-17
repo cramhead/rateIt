@@ -3,12 +3,9 @@
 </head>
 
 <body>
-  
- 
   {{> nav}}
- 
-
-  {{> hello}}
+  
+  {{> ideas}}
 </body>
 
 <template name="nav">
@@ -33,7 +30,39 @@
   </nav>
 </template>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="ideas">
+  <table class="ideas">
+
+  {{#each ideas}}
+     <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Created Date</th>
+      <th>
+        <button>
+          Add
+        </button>
+      </th>
+
+    </tr> 
+   {{> idea}}
+  {{else}} 
+    <tr>
+      <td>
+      <div class="panel panel-info">
+      <div class="panel-heading">Nothing to rate.</div>
+  <div class="panel-body">
+    <div></div>Add an idea. <button>Add</button>
+  </div>
+</div>
+       
+      </td>
+    </tr>
+  {{/each}}
+  </table>
 </template>
+
+<template name="idea">
+  <tr><td>{{name}}</td><td>{{description}}</td><td>{{createdAt}}</td></tr>
+</template>
+
