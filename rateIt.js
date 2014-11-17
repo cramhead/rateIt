@@ -4,15 +4,27 @@ if (Meteor.isClient) {
     ideas: function() {
       return Ideas.find({}, {
         sort: {
+          votes: -1,
           createdAt: -1
         }
       });
     }
   });
 
+  Template.ideas.events({
+    'click .up': function(evt, tmpl) {
+      var iId = this._id;
+      Ideas.update({_id: iId}, {$inc: {votes: 1}})
+    },
+    'click .down': function(evt, tmpl) {
+      var iId = this._id;
+      Ideas.update({_id: iId}, {$inc: {votes: -1}})
+    }
+
+  })
+
   Template.modal.events({
     'click .addIdea': function(evt, tmpl) {
-      console.log("button clicked");
 
       var name = tmpl.$('.name').val();
       var desc = tmpl.$('.description').val();
@@ -22,10 +34,11 @@ if (Meteor.isClient) {
         Ideas.insert({
           name: name,
           description: desc,
-          userId: uId
+          userId: uId,
+          createdAt: new Date(),
+          votes: 0
         });
       }
-
 
     }
   })

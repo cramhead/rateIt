@@ -1,5 +1,6 @@
 <head>
   <title>rateIt</title>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -7,7 +8,7 @@
 
   {{> ideas}}
 
-   {{> modal}}
+  {{> modal}}
 </body>
 
 <template name="nav">
@@ -36,12 +37,15 @@
   <table class="ideas">
 
     <tr>
+      <th>Vote Up</th>
       <th>Name</th>
       <th>Description</th>
       <th>Created Date</th>
+      <th>Vote Down</th>
       <th>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addIdeaModal">New Idea?</button>
       </th>
+
     </tr> 
     {{#each ideas}}
        
@@ -67,7 +71,14 @@
 </template>
 
 <template name="idea">
-  <tr><td>{{name}}</td><td>{{description}}</td><td>{{createdAt}}</td></tr>
+  <tr>
+    <td><a class='btn vote up'><i class="fa fa-3x fa-chevron-up"></i></a></td>
+    <td>{{votes}}</td>
+    <td>{{name}}</td>
+    <td>{{description}}</td>
+    <td>{{createdAt}}</td>
+    <td><a class='btn vote down'><i class="fa fa-3x fa-chevron-down"></i></a></td>
+  </tr>
 </template>
 
 <template name="modal">
