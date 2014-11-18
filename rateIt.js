@@ -1,6 +1,10 @@
 if (Meteor.isClient) {
   var FILTER_KEY = "searchFilter";
 
+  Template.ideas.created = function() {
+    Meteor.subscribe('votes');
+  };
+
   Template.ideas.rendered = function() {
 
     Session.setDefault(FILTER_KEY, "");
@@ -24,6 +28,7 @@ if (Meteor.isClient) {
       Meteor.subscribe('ideasFilter', filter)
     });
 
+
   };
 
   Template.ideas.helpers({
@@ -34,6 +39,12 @@ if (Meteor.isClient) {
           createdAt: -1
         }
       });
+    },
+    voteCount: function() {
+      var userId = Meteor.userId();
+      if (userId) {
+        return Votes.dailyLimit - Votes.dailyVoteCount(userId);
+      }
     }
   });
 
@@ -84,6 +95,8 @@ if (Meteor.isClient) {
           votes: 0
         });
       }
+
+      $('#addIdeaModal').modal('hide');
 
     }
   })

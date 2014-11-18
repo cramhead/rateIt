@@ -1,7 +1,6 @@
 Ideas = new Meteor.Collection('ideas');
 Votes = new Meteor.Collection('votes');
 
-var availableVotes = 5;
 
 Ideas.allow({
   insert: function(userId, doc) {
@@ -36,34 +35,34 @@ Votes.allow({
   }
 });
 
+Votes.dailyLimit = 5;
 
-if (Meteor.isClient) {
+Votes.dailyVoteCount = function(userId) {
+  var currentDateTime = new Date();
+  var year = currentDateTime.getFullYear();
+  var month = currentDateTime.getMonth();
+  var dayOfMonth = currentDateTime.getDate();
 
+  var startOfDay = new Date(year, month, dayOfMonth);
+  var endOfDay = moment(startOfDay).add(1, 'days').toDate();
 
-}
+  return Votes.find({
+    $and: [{
+      userId: userId
+    }, {
+      createdAt: {
+        $gte: startOfDay,
+        $lte: endOfDay
+      }
+    }]
+  }).count();
+};
 
 if (Meteor.isServer) {
 
+
   var overLimit = function(userId) {
-
-    var currentDateTime = new Date();
-    var year = currentDateTime.getFullYear();
-    var month = currentDateTime.getMonth();
-    var dayOfMonth = currentDateTime.getDate();
-
-    var startOfDay = new Date(year, month, dayOfMonth);
-    var endOfDay = moment(startOfDay).add(1, 'days').toDate();
-
-    return Votes.find({
-      $and: [{
-        userId: userId
-      }, {
-        createdAt: {
-          $gte: startOfDay,
-          $lte: endOfDay
-        }
-      }]
-    }).count() > availableVotes;
+    return Votes.dailyVoteCount(userId) >= Votes.dailyLimit;
   };
 
   Votes.after.insert(function(userId, doc) {
@@ -86,6 +85,10 @@ if (Meteor.isServer) {
       });
     }
   });
+
+  Meteor.publish('votes', function(){
+    return Votes.find({userId: this.userId});
+  })
 
 
   Meteor.publish('ideasFilter', function(filter, options) {
